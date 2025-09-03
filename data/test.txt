@@ -1,0 +1,7 @@
+# Directed graph (small test graph)
+# Nodes: 3 Edges: 3
+# FromNodeId	ToNodeId
+0	1
+1   0
+1   2
+2   1
