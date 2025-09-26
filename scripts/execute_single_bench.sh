@@ -172,7 +172,6 @@ get_graph_data
 
 export OMP_NUM_THREADS="$THREADS"
 
-echo "[INFO] OMP_NUM_THREADS=$OMP_NUM_THREADS"
 
 # Para rodar só o pagrank
 # ./pagerank -f "$text_path" -result-dir "$results_dir"
