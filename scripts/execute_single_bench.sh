@@ -13,8 +13,9 @@ need_cmd date
 
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-data_dir="./data"
-results_dir="./results"
+project_root="$(cd "$script_dir/.." && pwd)"
+data_dir="$project_root/data"
+results_dir="$project_root/results"
 
 
 # Vars para o script (valores padrão)
@@ -174,10 +175,10 @@ export OMP_NUM_THREADS="$THREADS"
 
 
 # Para rodar só o pagrank
-# ./pagerank -f "$text_path" -result-dir "$results_dir"
+# "$project_root/pagerank" -f "$text_path" -result-dir "$results_dir"
 
 
-vtune -collect $ANALYSIS_TYPE -- ./pagerank -f "$text_path" -result-dir "$results_dir"
+vtune -collect $ANALYSIS_TYPE -- "$project_root/pagerank" -f "$text_path" -result-dir "$results_dir"
 # Gera o relatório
 vtune -report summary \
   -result-dir "$results_dir" \
