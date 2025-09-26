@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <chrono>
 #include <cmath>
+#include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
@@ -11,23 +12,34 @@
 
 int main(int argc, char const* argv[])
 {
+    std::string filename;
+    
+    // Parse command line arguments
+    for (int i = 1; i < argc; i++) {
+        if (std::string(argv[i]) == "-f" && i + 1 < argc) {
+            filename = argv[i + 1];
+            i++; // Skip next argument as it's the filename
+        }
+    }
+    
+    if (filename.empty()) {
+        std::cerr << "Usage: " << argv[0] << " -f <graph_file>" << std::endl;
+        return 1;
+    }
+    
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Error: Could not open file " << filename << std::endl;
+        return 1;
+    }
+
     std::vector<std::vector<int>> page_graph;
     int num_pages = 0;
 
     /******************* INPUT HANDLING + NUM OF NODES *******************/
-    int num_threads = omp_get_max_threads();
-    if (argc > 1) {
-        num_threads = std::stoi(argv[1]);
-        if (num_threads <= 0) {
-            std::cerr << "Number of threads must be positive.\n";
-            return 1;
-        }
-    }
-    omp_set_num_threads(num_threads);
-    std::cout << "Using " << num_threads << " threads.\n";
 
     std::string line;
-    while (std::getline(std::cin, line)) {
+    while (std::getline(file, line)) {
         std::stringstream ss(line);
 
         // Skip comments except the "Nodes/Edges" line
@@ -47,8 +59,22 @@ int main(int argc, char const* argv[])
         int u, v;
         if (!(ss >> u >> v)) continue;
 
-        page_graph[u].push_back(v);
+        // Verificar se os índices estão dentro dos limites
+        if (u >= 0 && u < num_pages && v >= 0 && v < num_pages) {
+            page_graph[u].push_back(v);
+        }
     }
+    
+    file.close();
+
+    // Verificar se o número de páginas foi configurado
+    if (num_pages <= 0) {
+        std::cerr << "Erro: Número de páginas não foi encontrado no arquivo ou é inválido." << std::endl;
+        std::cerr << "Certifique-se de que o arquivo contém uma linha como '# Nodes: N Edges: M'" << std::endl;
+        return 1;
+    }
+
+    std::cout << "Número de páginas: " << num_pages << std::endl;
 
     /*************************** PageRank LOOP  **************************/
 
@@ -65,7 +91,7 @@ int main(int argc, char const* argv[])
 
         std::fill(new_page_rank.begin(), new_page_rank.end(), (1.0 - damping_factor) / num_pages);
         double dangling_sum = 0.0;
-
+        
         // Compute contributions from all nodes
         #pragma omp parallel for reduction(+:dangling_sum) schedule(static)
         for (int i = 0; i < num_pages; ++i) {
@@ -105,10 +131,7 @@ int main(int argc, char const* argv[])
     /*************************** OUTPUT RESULTS **************************/
 
     std::cout << "PageRank converged in " << iterations << " iterations." << std::endl;
-    std::cout << "Final PageRank values:\n";
-    for (int i = 0; i < num_pages; ++i) {
-        std::cout << std::fixed << std::setprecision(6) << page_rank[i] << std::endl;
-    }
+
     std::cout << "Time elapsed: " << elapsed.count() << " seconds." << std::endl;
 
     return 0;

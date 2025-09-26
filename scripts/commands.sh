@@ -1,0 +1,2 @@
+./scripts/execute_single_bench.sh -graph-name web-Google -graph-url https://snap.stanford.edu/data/web-Google.txt.gz -threads 1 && 
+./scripts/execute_single_bench.sh -graph-name web-Google -graph-url https://snap.stanford.edu/data/web-Google.txt.gz -threads 2
