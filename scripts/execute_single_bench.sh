@@ -178,67 +178,12 @@ export OMP_NUM_THREADS="$THREADS"
 # "$project_root/pagerank" -f "$text_path" -result-dir "$results_dir"
 
 
-vtune -collect $ANALYSIS_TYPE -- "$project_root/pagerank" -f "$text_path" -result-dir "$results_dir"
-
-# Aguarda um pouco para garantir que o VTune finalizou completamente
-sleep 2
-
-# Encontra o diretório de resultados criado pelo VTune
-actual_results_dir=$(find "$(dirname "$results_dir")" -maxdepth 1 -type d -name "*${ANALYSIS_TYPE}*${GRAPH_NAME}*${THREADS}*" | head -1)
-
-if [[ -z "$actual_results_dir" ]]; then
-    echo "[ERRO] Não foi possível encontrar o diretório de resultados criado pelo VTune"
-    echo "[INFO] Procurando em: $(dirname "$results_dir")"
-    echo "[INFO] Padrão: *${ANALYSIS_TYPE}*${GRAPH_NAME}*${THREADS}*"
-    ls -la "$(dirname "$results_dir")"
-    exit 1
-fi
-
-echo "[INFO] Diretório de resultados encontrado: $actual_results_dir"
-
-# Verifica se o diretório realmente existe e é acessível
-if [[ ! -d "$actual_results_dir" ]]; then
-    echo "[ERRO] O diretório encontrado não existe ou não é acessível: $actual_results_dir"
-    ls -la "$(dirname "$actual_results_dir")"
-    exit 1
-fi
-
-# Verifica se há arquivos de resultados no diretório
-if [[ -z "$(ls -A "$actual_results_dir" 2>/dev/null)" ]]; then
-    echo "[AVISO] O diretório de resultados está vazio: $actual_results_dir"
-    echo "[INFO] Conteúdo do diretório pai:"
-    ls -la "$(dirname "$actual_results_dir")"
-fi
-
-echo "[INFO] Verificando permissões do diretório:"
-ls -ld "$actual_results_dir"
-
+vtune -collect $ANALYSIS_TYPE -result-dir "$results_dir" -- "$project_root/pagerank" -f "$text_path"
 # Gera o relatório
-echo "[INFO] Executando comando de relatório..."
-echo "[INFO] vtune -report summary -result-dir \"$actual_results_dir\" -format csv -report-output \"$actual_results_dir/report.csv\""
-
-if ! vtune -report summary \
-  -result-dir "$actual_results_dir" \
+vtune -report summary \
+  -result-dir "$results_dir" \
   -format csv \
-  -report-output "$actual_results_dir/report.csv"; then
-  
-  echo "[ERRO] Falha ao gerar relatório com o diretório encontrado: $actual_results_dir"
-  echo "[INFO] Tentando com o diretório original: $results_dir"
-  
-  # Tenta com o diretório original
-  vtune -report summary \
-    -result-dir "$results_dir" \
-    -format csv \
-    -report-output "$results_dir/report.csv" || {
-    echo "[ERRO] Falha ao gerar relatório com ambos os diretórios"
-    echo "[INFO] Listando diretórios de resultados disponíveis:"
-    find "$(dirname "$results_dir")" -maxdepth 2 -type d -name "*${ANALYSIS_TYPE}*" -o -name "*${GRAPH_NAME}*" 2>/dev/null || true
-    exit 1
-  }
-fi
-
-echo "[INFO] Relatório gerado com sucesso!"
+  -report-output "$results_dir/report.csv"
 
   
-
 
