@@ -14,13 +14,14 @@ need_cmd date
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 data_dir="./data"
-
+results_dir="./results"
 
 
 # Vars para o script (valores padrão)
 THREADS=1
 GRAPH_NAME=''
 GRAPH_URL=''
+ANALYSIS_TYPE='performance-snapshot'
 
 # Função para mostrar ajuda
 show_help() {
@@ -61,6 +62,14 @@ show_parsed_params() {
 parse_arguments() {
     while [[ $# -gt 0 ]]; do
         case $1 in
+            -analysis-type)
+                if [[ -z "$2" || "$2" =~ ^- ]]; then
+                    echo "Erro: -analysis-type requer um valor"
+                    exit 1
+                fi
+                ANALYSIS_TYPE="$2"
+                shift 2
+                ;;
             -threads)
                 if [[ -z "$2" || "$2" =~ ^- ]]; then
                     echo "Erro: -threads requer um valor"
@@ -151,6 +160,10 @@ validate_required_params
 show_parsed_params
 
 mkdir -p "$data_dir"
+mkdir -p "$results_dir"
+mkdir -p "$results_dir/"$ANALYSIS_TYPE"_"$GRAPH_NAME"_"$THREADS
+
+results_dir="$results_dir/$ANALYSIS_TYPE"_"$GRAPH_NAME"_"$THREADS"
 
 # Cria os dados do grafo
 get_graph_data
@@ -158,11 +171,19 @@ get_graph_data
 # Executa kernel
 
 export OMP_NUM_THREADS="$THREADS"
-cmd=( "./pagerank" -f "$text_path" )
 
-echo "[INFO] Rodando: ${cmd[*]}"
 echo "[INFO] OMP_NUM_THREADS=$OMP_NUM_THREADS"
 
+# Para rodar só o pagrank
+# ./pagerank -f "$text_path" -result-dir "$results_dir"
 
-"${cmd[@]}"
+
+vtune -collect $ANALYSIS_TYPE -- ./pagerank -f "$text_path" -result-dir "$results_dir"
+# Gera o relatório
+vtune -report summary \
+  -result-dir "$results_dir" \
+  -format csv \
+  -report-output "$results_dir/report.csv"
+
+  
 

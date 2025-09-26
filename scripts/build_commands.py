@@ -16,7 +16,8 @@ def create_build_commands(csv_file):
             graph_name = row[header.index("GRAPH_NAME")]
             graph_url = row[header.index("GRAPH_URL")]
             threads = row[header.index("THREADS")]
-            command = f"./scripts/execute_single_bench.sh -graph-name {graph_name} -graph-url {graph_url} -threads {threads}"
+            analysis_type = row[header.index("ANALYSIS_TYPE")]
+            command = f"./scripts/execute_single_bench.sh -graph-name {graph_name} -graph-url {graph_url} -threads {threads} -analysis-type {analysis_type}"
             commands.append(command)
     return commands
 

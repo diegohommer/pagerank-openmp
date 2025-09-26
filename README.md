@@ -1,5 +1,5 @@
 # pagerank-openmp 
-
+Intel Vtune necessário gulizada
 ## Overview
 
 This project implements the PageRank algorithm in C++ with OpenMP for parallelization. It reads a directed graph from standard input, computes PageRank scores iteratively, and outputs the results along with runtime and convergence information.
