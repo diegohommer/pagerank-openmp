@@ -179,11 +179,25 @@ export OMP_NUM_THREADS="$THREADS"
 
 
 vtune -collect $ANALYSIS_TYPE -- "$project_root/pagerank" -f "$text_path" -result-dir "$results_dir"
+
+# Encontra o diretório de resultados criado pelo VTune
+actual_results_dir=$(find "$(dirname "$results_dir")" -maxdepth 1 -type d -name "*${ANALYSIS_TYPE}*${GRAPH_NAME}*${THREADS}*" | head -1)
+
+if [[ -z "$actual_results_dir" ]]; then
+    echo "[ERRO] Não foi possível encontrar o diretório de resultados criado pelo VTune"
+    echo "[INFO] Procurando em: $(dirname "$results_dir")"
+    echo "[INFO] Padrão: *${ANALYSIS_TYPE}*${GRAPH_NAME}*${THREADS}*"
+    ls -la "$(dirname "$results_dir")"
+    exit 1
+fi
+
+echo "[INFO] Diretório de resultados encontrado: $actual_results_dir"
+
 # Gera o relatório
 vtune -report summary \
-  -result-dir "$results_dir" \
+  -result-dir "$actual_results_dir" \
   -format csv \
-  -report-output "$results_dir/report.csv"
+  -report-output "$actual_results_dir/report.csv"
 
   
 
