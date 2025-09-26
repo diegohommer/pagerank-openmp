@@ -1,0 +1,3 @@
+Pin: pin-3.16-98275-e0db48c31
+Copyright 2002-2020 Intel Corporation.
+A:  Source/pin/elfio/img_elf.cpp: ProcessSectionHeaders: 927: unknown section type 0x13 for sec[45,.relr.dyn] in /lib64/ld-linux-x86-64.so.2

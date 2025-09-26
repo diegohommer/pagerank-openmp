@@ -1,0 +1,41 @@
+Hierarchy Level	Metric Name	Metric Value
+0	Elapsed Time	10.195418
+1	IPC	1.278530
+1	Average CPU Frequency	2294661266.365888
+0	Effective Logical Core Utilization	2.5% (0.995 out of 40)
+1	Effective Physical Core Utilization	5.0% (0.996 out of 20)
+0	Microarchitecture Usage	35.5
+1	Retiring	35.5
+1	Front-End Bound	6.3
+1	Back-End Bound	55.2
+2	Memory Bound	46.5
+2	Core Bound	8.7
+1	Bad Speculation	3.1
+0	Memory Bound	46.5
+1	L1 Bound	9.1
+1	L2 Bound	N/A with HT on
+1	L3 Bound	N/A with HT on
+1	DRAM Bound	
+2	DRAM Bandwidth Bound	0.0
+1	Store Bound	0.8
+1	NUMA: % of Remote Accesses	1.9
+0	Collection and Platform Info	
+1	Application Command Line	/home/users/dhamorim/pagerank-openmp/pagerank "-f" "/home/users/dhamorim/pagerank-openmp/data/web-Google/web-Google.txt" 
+1	Operating System	6.1.0-28-amd64 12.12
+1	Computer Name	hype5
+1	Result Size	3548749
+1	Collection start time	22:45:44 26/09/2025 UTC
+1	Collection stop time	22:45:54 26/09/2025 UTC
+1	Collector Type	Driverless Perf per-process counting
+1	CPU	
+2	Name	Intel(R) Xeon(R) E5/E7 v3 Processor code named Haswell
+2	Frequency	2294686050
+2	Logical CPU Count	40
+2	Max DRAM Single-Package Bandwidth	59000000000.000000
+2	Cache Allocation Technology	
+3	Level 2 capability	not detected
+3	Level 3 capability	not detected
+0	Recommendations:
+1	Hotspots	Start with Hotspots analysis to understand the efficiency of your algorithm.	Use Hotspots analysis to identify the most time consuming functions. Drill down to see the time spent on every line of code.
+1	Memory Access	The Memory Bound metric is high  (46.5%). A significant fraction of execution pipeline slots could be stalled due to demand memory load and stores. 	Use Memory Access analysis to measure metrics that can identify memory access issues.
+1	Threading	There is poor utilization of logical CPU cores (2.5%) in your application. 	 Use Threading to explore more opportunities to increase parallelism in your application.
