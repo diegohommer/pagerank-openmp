@@ -5,7 +5,7 @@
 
 import csv
 
-csv_file = "./experiments.csv"
+csv_file = "./data/experiments.csv"
 
 def create_build_commands(csv_file):
     commands = []
