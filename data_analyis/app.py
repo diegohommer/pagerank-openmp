@@ -88,7 +88,7 @@ def add_spedup_colums(df: pd.DataFrame) -> pd.DataFrame:
     return result_df
 
 
-df = load_results_dataframe(Path("../../results/"))
+df = load_results_dataframe(Path("../results/"))
 df = add_spedup_colums(df)
 options = [col for col in df.columns if col not in ["Page Name", "Threads"]]
 app = Dash(
