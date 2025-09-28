@@ -13,7 +13,7 @@
 int main(int argc, char const* argv[])
 {
     std::string filename;
-    
+
     // Parse command line arguments
     for (int i = 1; i < argc; i++) {
         if (std::string(argv[i]) == "-f" && i + 1 < argc) {
@@ -21,12 +21,12 @@ int main(int argc, char const* argv[])
             i++; // Skip next argument as it's the filename
         }
     }
-    
+
     if (filename.empty()) {
         std::cerr << "Usage: " << argv[0] << " -f <graph_file>" << std::endl;
         return 1;
     }
-    
+
     std::ifstream file(filename);
     if (!file.is_open()) {
         std::cerr << "Error: Could not open file " << filename << std::endl;
@@ -55,19 +55,18 @@ int main(int argc, char const* argv[])
             continue;
         }
 
-        // Read edge u->v and insert reverse edge into transposed page graph
+        // Read edge u->v and insert it into page graph
         int u, v;
         if (!(ss >> u >> v)) continue;
 
-        // Verificar se os índices estão dentro dos limites
         if (u >= 0 && u < num_pages && v >= 0 && v < num_pages) {
             page_graph[u].push_back(v);
         }
     }
-    
+
     file.close();
 
-    // Verificar se o número de páginas foi configurado
+    // Check if the number of Nodes and Edges was explicitly displayed.
     if (num_pages <= 0) {
         std::cerr << "Erro: Número de páginas não foi encontrado no arquivo ou é inválido." << std::endl;
         std::cerr << "Certifique-se de que o arquivo contém uma linha como '# Nodes: N Edges: M'" << std::endl;
@@ -91,7 +90,7 @@ int main(int argc, char const* argv[])
 
         std::fill(new_page_rank.begin(), new_page_rank.end(), (1.0 - damping_factor) / num_pages);
         double dangling_sum = 0.0;
-        
+
         // Compute contributions from all nodes
         #pragma omp parallel for reduction(+:dangling_sum) schedule(static)
         for (int i = 0; i < num_pages; ++i) {
