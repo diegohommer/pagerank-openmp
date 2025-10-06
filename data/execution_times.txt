@@ -1,0 +1,111 @@
+[INFO] THREADS=1
+[INFO] GRAPH_NAME=web-Google
+Time elapsed: 5.48149 seconds.
+
+[INFO] THREADS=2
+[INFO] GRAPH_NAME=web-Google
+Time elapsed: 4.47759 seconds.
+
+[INFO] THREADS=4
+[INFO] GRAPH_NAME=web-Google
+Time elapsed: 2.63688 seconds.
+
+[INFO] THREADS=8
+[INFO] GRAPH_NAME=web-Google
+Time elapsed: 1.51557 seconds.
+
+[INFO] THREADS=16
+[INFO] GRAPH_NAME=web-Google
+Time elapsed: 0.833043 seconds.
+
+[INFO] THREADS=32
+[INFO] GRAPH_NAME=web-Google
+Time elapsed: 0.536677 seconds.
+
+[INFO] THREADS=64
+[INFO] GRAPH_NAME=web-Google
+Time elapsed: 0.528007 seconds.
+
+[INFO] THREADS=1
+[INFO] GRAPH_NAME=web-BerkStan
+Time elapsed: 3.92483 seconds.
+
+[INFO] THREADS=2
+[INFO] GRAPH_NAME=web-BerkStan
+Time elapsed: 2.11377 seconds.
+
+[INFO] THREADS=4
+[INFO] GRAPH_NAME=web-BerkStan
+Time elapsed: 1.25285 seconds.
+
+[INFO] THREADS=8
+[INFO] GRAPH_NAME=web-BerkStan
+Time elapsed: 1.00322 seconds.
+
+[INFO] THREADS=16
+[INFO] GRAPH_NAME=web-BerkStan
+Time elapsed: 0.716922 seconds.
+
+[INFO] THREADS=32
+[INFO] GRAPH_NAME=web-BerkStan
+Time elapsed: 1.26174 seconds.
+
+[INFO] THREADS=64
+[INFO] GRAPH_NAME=web-BerkStan
+Time elapsed: 1.03827 seconds.
+
+[INFO] THREADS=1
+[INFO] GRAPH_NAME=web-NotreDame
+Time elapsed: 0.694456 seconds.
+
+[INFO] THREADS=2
+[INFO] GRAPH_NAME=web-NotreDame
+Time elapsed: 0.482483 seconds.
+
+[INFO] THREADS=4
+[INFO] GRAPH_NAME=web-NotreDame
+Time elapsed: 0.300212 seconds.
+
+[INFO] THREADS=8
+[INFO] GRAPH_NAME=web-NotreDame
+Time elapsed: 0.265926 seconds.
+
+[INFO] THREADS=16
+[INFO] GRAPH_NAME=web-NotreDame
+Time elapsed: 0.225846 seconds.
+
+[INFO] THREADS=32
+[INFO] GRAPH_NAME=web-NotreDame
+Time elapsed: 0.256578 seconds.
+
+[INFO] THREADS=64
+[INFO] GRAPH_NAME=web-NotreDame
+Time elapsed: 0.250991 seconds.
+
+[INFO] THREADS=1
+[INFO] GRAPH_NAME=web-Stanford
+Time elapsed: 1.75198 seconds.
+
+[INFO] THREADS=2
+[INFO] GRAPH_NAME=web-Stanford
+Time elapsed: 1.70854 seconds.
+
+[INFO] THREADS=4
+[INFO] GRAPH_NAME=web-Stanford
+Time elapsed: 1.13097 seconds.
+
+[INFO] THREADS=8
+[INFO] GRAPH_NAME=web-Stanford
+Time elapsed: 0.783096 seconds.
+
+[INFO] THREADS=16
+[INFO] GRAPH_NAME=web-Stanford
+Time elapsed: 0.642845 seconds.
+
+[INFO] THREADS=32
+[INFO] GRAPH_NAME=web-Stanford
+Time elapsed: 0.564969 seconds.
+
+[INFO] THREADS=64
+[INFO] GRAPH_NAME=web-Stanford
+Time elapsed: 0.582527 seconds.
