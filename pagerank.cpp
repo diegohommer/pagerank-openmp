@@ -92,7 +92,7 @@ int main(int argc, char const* argv[])
         double dangling_sum = 0.0;
 
         // Compute contributions from all nodes
-        #pragma omp parallel for reduction(+:dangling_sum) schedule(static)
+        #pragma omp parallel for reduction(+:dangling_sum) schedule(dynamic, 32)
         for (int i = 0; i < num_pages; ++i) {
             int outdeg = page_graph[i].size();
             if (outdeg == 0) {
