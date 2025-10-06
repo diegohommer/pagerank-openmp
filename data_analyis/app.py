@@ -53,7 +53,7 @@ def load_results_dataframe(base_dir: Path) -> pd.DataFrame:
     return full_df
 
 
-def add_spedup_colums(df: pd.DataFrame) -> pd.DataFrame:
+def add_spedup_columns(df: pd.DataFrame) -> pd.DataFrame:
     """
     Adds the "Algorithm Time Speedup" and the "Elapsed Time Speedup" columns
     """
@@ -88,14 +88,53 @@ def add_spedup_colums(df: pd.DataFrame) -> pd.DataFrame:
     return result_df
 
 
+def add_efficiency_columns(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Adds the "Algorithm Time Efficiency" and the "Elapsed Time Efficiency" columns
+    sequential_time / (parallel_time * num_threads)
+    """
+    result_df = df.copy()
+
+    result_df["Algorithm Time Efficiency"] = pd.NA
+    result_df["Elapsed Time Efficiency"] = pd.NA
+
+    pages = df["Page Name"].unique()
+
+    for page in pages:
+        page_data = result_df[result_df["Page Name"] == page]
+        baseline_data = page_data[page_data["Threads"] == 1]
+
+        if baseline_data.empty:
+            continue  # Skip if no single-thread baseline exists
+
+        baseline_algo_time = baseline_data["Algorithm Time"].iloc[0]
+        baseline_elapsed_time = baseline_data["Elapsed Time"].iloc[0]
+
+        page_mask = result_df["Page Name"] == page
+
+        result_df.loc[page_mask, "Algorithm Time Efficiency"] = baseline_algo_time / (
+            result_df.loc[page_mask, "Algorithm Time"]
+            * result_df.loc[page_mask, "Threads"]
+        )
+
+        result_df.loc[page_mask, "Elapsed Time Efficiency"] = baseline_elapsed_time / (
+            result_df.loc[page_mask, "Elapsed Time"]
+            * result_df.loc[page_mask, "Threads"]
+        )
+
+    return result_df
+
+
 df = load_results_dataframe(Path("../results/"))
-df = add_spedup_colums(df)
-options = [col for col in df.columns if col not in ["Page Name", "Threads"]]
+df = add_spedup_columns(df)
+df = add_efficiency_columns(df)
+
 app = Dash(
     __name__,
     suppress_callback_exceptions=True,
     external_stylesheets=[dbc.themes.JOURNAL],
 )
+options = [col for col in df.columns if col not in ["Page Name", "Threads"]]
 
 app.layout = dbc.Container(
     [
